@@ -1,14 +1,16 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import './App.css';
 
 function App() {
   // const query = generateContent(`what payment methods do you allow?`);
   const [result, setResult] = useState([]);
   const [message, setMessage] = useState('');
+  const divRef = useRef(null);
 
   // useEffect(() => {
     const fetchData = async () => {
-      const newArray = [...result, message];
+      // const newArray = [...result];
+      setResult((result) => [...result, message]);
       setMessage("");
       try {
         const response = await fetch('/query', {
@@ -23,8 +25,9 @@ function App() {
         const data = await response.json(); // Assuming the backend sends JSON
         // console.log(typeof data);
         // console.log("response: ", data);
-        newArray.push(data.candidates[0].content.parts[0].text); //Only sets chat response as result data
-        setResult(newArray);
+        setResult((result) => [...result, data.candidates[0].content.parts[0].text]); //Only sets chat response as result data
+        // setResult(newArray);
+
       } catch (error) {
         console.error('Error:', error);
       }
@@ -37,12 +40,18 @@ function App() {
       }
     };
 
+    useEffect(() => {
+      if (divRef.current) {
+        divRef.current.scrollTop = divRef.current.scrollHeight;
+      }
+    }, [result]);
+
   //   fetchData();
   // }, []);
 
   return (
-    <div className="chatbox">
-      <div className='messages'>
+    <div className="chatbox" >
+      <div className='messages' ref={divRef}>
           {result.map((result, index) => <p key={index}>{result}</p>)}
       </div>
       <div className='input-container'>
@@ -52,7 +61,7 @@ function App() {
         value={message}
         onChange={e => setMessage(e.target.value) }
         placeholder="Enter your message"
-        onKeyPress={handleKeyPress}
+        onKeyDown={handleKeyPress}
       />
       <button onClick={fetchData}>Send</button>   
       </div>
