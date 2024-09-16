@@ -50,7 +50,8 @@ function App() {
   // }, []);
 
   return (
-    <div className="chatbox" >
+    <div className="chatbox">
+      <h1>Medical Chatbot Demo</h1>
       <div className='messages' ref={divRef}>
           {result.map((result, index) => <p key={index}>{result}</p>)}
       </div>
