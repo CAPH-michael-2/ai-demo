@@ -6,6 +6,7 @@ function App() {
   const [result, setResult] = useState([]);
   const [message, setMessage] = useState('');
   const divRef = useRef(null);
+  const [selectedImage, setSelectedImage] = useState(null);
 
   // useEffect(() => {
     const fetchData = async () => {
@@ -40,6 +41,15 @@ function App() {
       }
     };
 
+    const handleFileChange = (event) => {
+      setSelectedImage(event.target.files[0]);
+    };
+  
+    const handleReset = () => {
+      setSelectedImage(null);
+    };
+  
+
     useEffect(() => {
       if (divRef.current) {
         divRef.current.scrollTop = divRef.current.scrollHeight;
@@ -64,6 +74,26 @@ function App() {
         placeholder="Enter your message"
         onKeyDown={handleKeyPress}
       />
+
+        <input
+        type="file"
+        name="myImage"
+        // Event handler to capture file selection and update the state
+        onChange={handleFileChange}
+      />
+            {selectedImage && (
+        <div>
+          {/* Display the selected image */}
+          {/* <img
+            alt="not found"
+            width={"250px"}
+            src={URL.createObjectURL(selectedImage)}
+          />
+          <br /> <br /> */}
+          {/* Button to remove the selected image */}
+          <button onClick={handleReset}>Remove</button>
+        </div>
+      )}
       <button onClick={fetchData}>Send</button>   
       </div>
     </div>
