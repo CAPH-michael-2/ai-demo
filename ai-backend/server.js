@@ -1,8 +1,11 @@
 const express = require('express')
 const app = express()
 const streamChat = require('./vertex');
+var cors = require('cors')
 
 app.use(express.json());
+app.use(cors());
+
 
 app.post("/query", async (req,res) =>{
     const data = req.body.message;
