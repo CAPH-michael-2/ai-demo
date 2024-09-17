@@ -1,10 +1,14 @@
-const {VertexAI} = require('@google-cloud/vertexai');
+const { VertexAI } = require("@google-cloud/vertexai");
 
 // Initialize Vertex with your Cloud project and location
-const vertex_ai = new VertexAI({project: 'ai-demo-435502', location: 'asia-southeast1'});
-const model = 'gemini-1.5-flash-001';
+const vertex_ai = new VertexAI({
+  project: "ai-demo-435502",
+  location: "asia-southeast1",
+});
+const model = "gemini-1.5-flash-001";
 
-const textsi_1 = {text: `You are a friendly and helpful assistant for Gemini Hospital. Don't answer questions about what you are, instead, you answer that you are an inquiry chatbot that helps customers of Gemini Hospital. Ensure your answers are complete, unless the user requests a more concise approach.
+const textsi_1 = {
+  text: `You are a friendly and helpful assistant for Gemini Hospital. Don't answer questions about what you are, instead, you answer that you are an inquiry chatbot that helps customers of Gemini Hospital. Ensure your answers are complete, unless the user requests a more concise approach.
   When presented with inquiries seeking information, provide answers that reflect a deep understanding of the field, guaranteeing their correctness.
   For any non-english queries, respond in the same language as the prompt unless otherwise specified by the user.
   For prompts involving reasoning, provide a clear explanation of each step in the reasoning process before presenting the final answer.
@@ -18,6 +22,10 @@ const textsi_1 = {text: `You are a friendly and helpful assistant for Gemini Hos
   Services Offered
   Gemini Hospital offers a comprehensive range of healthcare services to cater to the diverse needs of its patients. These include:
   
+  Location: Hotel Dr, East St, Ayala Center, Makati, 12242 Metro Manila
+  Email address: contact@geminihospital.com
+  Phone: +63123456
+
   Inpatient Services:
   General medicine
   Surgery
@@ -73,36 +81,37 @@ const textsi_1 = {text: `You are a friendly and helpful assistant for Gemini Hos
   Question: Do you offer childcare services? Answer: No, we do not offer childcare services. However, we can provide you with information about nearby childcare facilities.
   
   International Patients
-  Question: What services do you offer to international patients? Answer: We offer a range of services to international patients, including medical consultations, diagnostic tests, surgeries, and post-treatment care. We also have staff who can assist with visa applications, travel arrangements, and translation services.`};
+  Question: What services do you offer to international patients? Answer: We offer a range of services to international patients, including medical consultations, diagnostic tests, surgeries, and post-treatment care. We also have staff who can assist with visa applications, travel arrangements, and translation services.`,
+};
 
 // Instantiate the models
 const generativeModel = vertex_ai.preview.getGenerativeModel({
   model: model,
   generationConfig: {
-    'maxOutputTokens': 1024,
-    'temperature': 0.2,
-    'topP': 0.8,
+    maxOutputTokens: 1024,
+    temperature: 0.2,
+    topP: 0.8,
   },
   safetySettings: [
     {
-        'category': 'HARM_CATEGORY_HATE_SPEECH',
-        'threshold': 'BLOCK_MEDIUM_AND_ABOVE'
+      category: "HARM_CATEGORY_HATE_SPEECH",
+      threshold: "BLOCK_MEDIUM_AND_ABOVE",
     },
     {
-        'category': 'HARM_CATEGORY_DANGEROUS_CONTENT',
-        'threshold': 'BLOCK_MEDIUM_AND_ABOVE'
+      category: "HARM_CATEGORY_DANGEROUS_CONTENT",
+      threshold: "BLOCK_MEDIUM_AND_ABOVE",
     },
     {
-        'category': 'HARM_CATEGORY_SEXUALLY_EXPLICIT',
-        'threshold': 'BLOCK_MEDIUM_AND_ABOVE'
+      category: "HARM_CATEGORY_SEXUALLY_EXPLICIT",
+      threshold: "BLOCK_MEDIUM_AND_ABOVE",
     },
     {
-        'category': 'HARM_CATEGORY_HARASSMENT',
-        'threshold': 'BLOCK_MEDIUM_AND_ABOVE'
-    }
+      category: "HARM_CATEGORY_HARASSMENT",
+      threshold: "BLOCK_MEDIUM_AND_ABOVE",
+    },
   ],
   systemInstruction: {
-    parts: [textsi_1]
+    parts: [textsi_1],
   },
 });
 
@@ -116,7 +125,7 @@ const chat = generativeModel.startChat({});
 // async function generateContent() {
 //   await sendMessage([
 //     {text: `what payment methods do you allow?`}
-//   ]); 
+//   ]);
 // }
 
 async function streamChat(data) {
@@ -124,13 +133,11 @@ async function streamChat(data) {
   // const chatInput = "what are your payment methods?";
   const result = await chat.sendMessageStream(data);
   for await (const item of result.stream) {
-      console.log("Stream chunk: ", item.candidates[0].content.parts[0].text);
+    console.log("Stream chunk: ", item.candidates[0].content.parts[0].text);
   }
   const aggregatedResponse = await result.response;
-  console.log('Aggregated response: ', JSON.stringify(aggregatedResponse));
+  console.log("Aggregated response: ", JSON.stringify(aggregatedResponse));
   return aggregatedResponse;
 }
 
 module.exports = streamChat;
-
-

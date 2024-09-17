@@ -13,7 +13,6 @@
   }
 }
 
-
 .App-header {
   background-color: #282c34;
   min-height: 100vh;
@@ -42,44 +41,57 @@
 .chatbox {
   display: flex;
   flex-direction: column;
-  height: 100vh;
+  height: calc(100vh);
   overflow-y: auto;
-  padding: 10px;
   font-family: Raleway;
-  background: #E8EBF5;
+  background: #e8ebf5;
+
+  h1 {
+    margin: 0;
+    padding: 20px;
+  }
 }
 
 .messages {
+  padding: 20px;
   flex-grow: 1;
   overflow-y: auto;
+}
+
+.message:nth-child(odd) {
+  text-align: right;
+
+  p {
+    padding: 10px;
+    border-radius: 10px;
+    display: inline-block;
+    background-color: white;
+  }
 }
 
 .input-container {
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 10px;
+  padding: 10px 20px;
 }
 
 input {
   flex-grow: 1;
-  padding: 5px;
   padding: 10px;
   border: none;
   border-radius: 50px;
   background: whitesmoke;
-  margin: 10px;
   font-family: ubuntu;
   font-weight: 600;
   color: #444;
   width: 280px;
-
 }
 
 button {
   margin-left: 10px;
   padding: 5px 10px;
-  background: #2C50EF;
+  background: #2c50ef;
   color: white;
   border-top-left-radius: 25px;
   border-top-right-radius: 25px;
@@ -90,7 +102,7 @@ button {
 
 .chat-button {
   padding: 25px 16px;
-  background: #2C50EF;
+  background: #2c50ef;
   width: 120px;
   position: absolute;
   bottom: 0;
@@ -99,25 +111,25 @@ button {
   border-top-left-radius: 25px;
   border-top-right-radius: 25px;
   border-bottom-left-radius: 25px;
-  box-shadow: 0 2px 15px rgba(#2C50EF, 0.21);
+  box-shadow: 0 2px 15px rgba(#2c50ef, 0.21);
   cursor: pointer;
   & span {
-      &::before {
-          content: "";
-          height: 15px;
-          width: 15px;
-          background: #47cf73;
-          position: absolute;
-          transform: translate(0, -7px);
-          border-radius: 15px;
-      }
-      &::after {
-          content: "Message Us";
-          font-size: 14px;
-          color: white;
-          position: absolute;
-          left: 50px;
-          top: 18px;
-      }
+    &::before {
+      content: "";
+      height: 15px;
+      width: 15px;
+      background: #47cf73;
+      position: absolute;
+      transform: translate(0, -7px);
+      border-radius: 15px;
+    }
+    &::after {
+      content: "Message Us";
+      font-size: 14px;
+      color: white;
+      position: absolute;
+      left: 50px;
+      top: 18px;
+    }
   }
 }
